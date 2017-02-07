@@ -1,36 +1,25 @@
 FROM microsoft/mssql-server-linux:latest
 
+ENV \
+  ACCEPT_EULA=Y \
+  container=docker \
+  LANG='C.UTF-8' \
+  LC_ALL='C.UTF-8' \
+  LANGUAGE='C.UTF-8'
+
 RUN \
-apt-get update && \
-apt-get install -y python sudo
+  locale-gen en_US.UTF-8 && \
+  update-locale && \
+  apt-get update && \
+  apt-get install -y sudo python curl apt-transport-https && \
+  curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+  curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | tee /etc/apt/sources.list.d/msprod.list && \
+  apt-get update && \
+  apt-get install -y mssql-tools && \
+  rm -rf /var/lib/apt/lists/*
 
-ENV SA_PASSWORD=yourStrong123Password
-ENV ACCEPT_EULA=Y
-ENV container=docker
-
-# sql server setup
-RUN /opt/mssql/bin/sqlservr-setup --accept-eula --set-sa-password
-
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-
-ADD entrypoint.sh / 
-
-# sql tools setup; 
-# sqlcmd -S <host> -U <user> -P <password>
-RUN \
-locale-gen en_US.UTF-8 && \
-update-locale && \
-apt-get update && \
-apt-get install -y curl apt-transport-https && \
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-curl https://packages.microsoft.com/config/ubuntu/15.10/prod.list | tee /etc/apt/sources.list.d/msprod.list && \
-apt-get update && \
-apt-get install -y mssql-tools && \
-chmod +x /entrypoint.sh
+COPY ./init /init
 
 EXPOSE 1433
 
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/init/start.sh"]
