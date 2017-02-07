@@ -15,7 +15,6 @@ System administrator password: `$SA_PASSWORD`
 
 `$MSSQL_DB=testdb`
 
-```
-$MSSQL_USER=tester 
-#login is the same as $MSSQL_USER and ROLE is sysadmin
-```
+`$MSSQL_USER=tester`
+
+`$MSSQL_PASSWORD=My@Super@Secret`
