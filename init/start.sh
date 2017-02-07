@@ -23,7 +23,7 @@ fi
 
 /opt/mssql/bin/sqlservr  > /var/opt/mssql/log/serverstart.log &
 
-echo =============== MSSQL SERVER STARTING             ==========================
+echo =============== MSSQL SERVER STARTING            ===============
 #waiting for mssql to start
 export STATUS=0
 i=0
@@ -57,16 +57,16 @@ fi
 
 
 if [ ! -f /opt/mssql/initout.log ]; then
-  echo =============== CREATING INIT DATA                ==========================
+  echo =============== CREATING INIT DATA               ===============
   sed -i s/"{MSSQL_USER}"/"${MSSQL_USER}"/g /init/init.sql
   sed -i s/"{MSSQL_PASSWORD}"/"${MSSQL_PASSWORD}"/g /init/init.sql
   sed -i s/"{MSSQL_DB}"/"${MSSQL_DB}"/g /init/init.sql
   /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -t 30 -i"/init/init.sql" -o"/opt/mssql/initout.log"
-  echo =============== INIT DATA CREATED 				   ==========================
+  echo =============== INIT DATA CREATED 				        ===============
 fi
 
 
-echo =============== MSSQL SERVER SUCCESSFULLY STARTED ==========================
+echo =============== MSSQL SERVER SUCCESSFULLY STARTED ===============
 
 #trap 
 while [ "$END" == '' ]; do
