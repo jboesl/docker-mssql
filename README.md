@@ -1,3 +1,5 @@
+# This image is no longer supported since starting with version ctp1-4 the original image from microsoft offers all neded for testing!
+
 
 Based on the mssql-server-linux container from microsoft (https://hub.docker.com/r/microsoft/mssql-server-linux) but with mssql-tools installed and ready to used database.
 This is image is intended for testing only.
